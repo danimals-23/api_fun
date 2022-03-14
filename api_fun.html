@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+	<title>COVID-19 USA CASES</title>
+	<meta charset="utf-8"/>
+	<style>
+		h2 {
+			font-size: 15px;
+		}
+		li {
+			list-style-type: none;
+		}
+		body {
+			text-align: center;
+			background-color:rgb(235, 197, 115);
+			font-size: 20px;
+			font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+		}
+		.fetch {
+			font-size: 30px;
+		}
+		.ajax {
+			font-size: 30px;
+		}
+		p {
+			padding: 20px;
+		}
+		.box {
+			border: 1px solid black;
+			width: 50%;
+			text-align: center;
+			margin: auto;
+		}
+	</style>
+	<script>
+		window.onload = function() {
+			loadFile();
+			postData();
+		};
+		
+		async function postData() {
+			const response = await fetch("https://covid-api.mmediagroup.fr/v1/cases");
+			const data = await response.json();
+
+			console.log(data);
+			str = "";
+			str += "<br><strong> Number of Total Confirmed Covid Cases (USA): </strong>" + data["US"]["All"]["confirmed"] + " cases" + "</br>";
+			str += "<br><strong> Number of Total Confirmed Covid Deaths (USA): </strong>" + data["US"]["All"]["deaths"] + " deaths" + "</br> <br />";
+			document.getElementById("data2").innerHTML = str; 
+
+		}
+
+		function loadFile() {
+			request = new XMLHttpRequest();
+			console.log("1 - request object created");
+			request.open("GET", "https://covid-api.mmediagroup.fr/v1/cases", true);
+
+			console.log("2 - opened request file");
+ 
+			request.onreadystatechange = function() {
+				console.log("3 - readystatechange event fired.");
+				countries = [];
+				if (request.readyState == 4 && request.status == 200) {
+
+					console.log("5 - response received");
+					result = request.responseText;
+					const obj = JSON.parse(result);
+
+					str = "";
+					str += "<br><strong> Number of Total Confirmed Covid Cases (USA): </strong>" + obj["US"]["All"]["confirmed"] + " cases" + "</br>";
+					str += "<br><strong> Number of Total Confirmed Covid Deaths (USA): </strong>" + obj["US"]["All"]["deaths"] + " deaths" + "</br> <br />";
+					document.getElementById("data").innerHTML = str; 
+
+				}
+				else if (request.readyState == 4 && request.status != 200) {
+
+					document.getElementById("data").innerHTML = "Something is wrong! Check if the server is offline, or if you are connected to the internet!";
+
+				}
+
+				else if (request.readyState == 3) {
+
+					document.getElementById("data").innerHTML = "Too soon!  Try again";
+
+				}
+
+			}
+			request.send();
+			console.log("4 - Request sent");
+		}
+	</script>
+</head>
+
+
+
+<body>
+	<h1>Covid-19 Data (US)</h1>
+	<h2 id="link">Data from: 
+		<a href="https://covid-api.mmediagroup.fr/v1/cases">covid-api.mmediagroup</a>
+	</h2>
+	<div class="box">
+		<div id="loadAjax">
+			<div class="ajax"><strong>AJAX call:</strong></div>
+			<div id="data">Loading...</div>
+		</div>
+	</div>
+	<div class="box">
+		<div id="fetchData">
+			<div class="fetch"><strong>Fetch call:</strong></div>
+			<div id="data2">Loading...</div>
+		</div>
+	</div>
+
+	<div class="questions">
+		<strong><br /> <br />Questions:</strong> </div><br />
+		<div class="box">
+		<p>
+			The API I selected was a Covid-19 cases/deaths tracker for all countries.
+			This is very useful for people who want to know how many cases there have been,
+			and if the current amount of cases is spiking. It is useful to also 
+			compare the number of cases and deaths in different countries to see
+			how the preventative measures compare.
+		</p>
+		<p>
+			The website is linked above!
+		</p>
+		<p>
+			I used fetch to get the data from the website as a JSON object, and
+			then parsed the data to display it on my page.
+
+			I also used AJAX to get the data through a request, then read the data
+			as a JSON object, and parsed it to display it on the page.
+		</p>
+		<p>
+			This API is useful for anyone who wants to know the statistics
+			about covid cases and deaths in any country. If someone wanted to see if
+			there was a correlation between the amount of preventative measures taken
+			in one country compared to another, they could use this API to check and
+			compare the number of cases + deaths between countries.
+		</p>
+		</div>
+	</div>
+
+</body>
+</html>
