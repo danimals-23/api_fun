@@ -39,13 +39,14 @@
 		};
 		
 		async function postData() {
-			const response = await fetch("https://covid-api.mmediagroup.fr/v1/cases");
+			const response = await fetch("https://api.covidtracking.com/v1/us/current.json");
 			const data = await response.json();
+
 
 			console.log(data);
 			str = "";
-			str += "<br><strong> Number of Total Confirmed Covid Cases (USA): </strong>" + data["US"]["All"]["confirmed"] + " cases" + "</br>";
-			str += "<br><strong> Number of Total Confirmed Covid Deaths (USA): </strong>" + data["US"]["All"]["deaths"] + " deaths" + "</br> <br />";
+			str += "<br><strong> Number of Total Confirmed Covid Cases (USA): </strong>" + data[0].positive + " cases" + "</br>";
+			str += "<br><strong> Number of Total Confirmed Covid Deaths (USA): </strong>" + data[0].death + " deaths" + "</br> <br />";
 			document.getElementById("data2").innerHTML = str; 
 
 		}
@@ -53,7 +54,7 @@
 		function loadFile() {
 			request = new XMLHttpRequest();
 			console.log("1 - request object created");
-			request.open("GET", "https://covid-api.mmediagroup.fr/v1/cases", true);
+			request.open("GET", "https://api.covidtracking.com/v1/us/current.json", true);
 
 			console.log("2 - opened request file");
  
@@ -67,8 +68,8 @@
 					const obj = JSON.parse(result);
 
 					str = "";
-					str += "<br><strong> Number of Total Confirmed Covid Cases (USA): </strong>" + obj["US"]["All"]["confirmed"] + " cases" + "</br>";
-					str += "<br><strong> Number of Total Confirmed Covid Deaths (USA): </strong>" + obj["US"]["All"]["deaths"] + " deaths" + "</br> <br />";
+					str += "<br><strong> Number of Total Confirmed Covid Cases (USA): </strong>" + obj[0].positive + " cases" + "</br>";
+					str += "<br><strong> Number of Total Confirmed Covid Deaths (USA): </strong>" + obj[0].death + " deaths" + "</br> <br />";
 					document.getElementById("data").innerHTML = str; 
 
 				}
@@ -96,7 +97,7 @@
 <body>
 	<h1>Covid-19 Data (US)</h1>
 	<h2 id="link">Data from: 
-		<a href="https://covid-api.mmediagroup.fr/v1/cases">covid-api.mmediagroup</a>
+		<a href="https://api.covidtracking.com/v1/us/current.json">covidtracking.com</a>
 	</h2>
 	<div class="box">
 		<div id="loadAjax">
@@ -115,10 +116,10 @@
 		<strong><br /> <br />Questions:</strong> </div><br />
 		<div class="box">
 		<p>
-			The API I selected was a Covid-19 cases/deaths tracker for all countries.
+			The API I selected was a Covid-19 cases/deaths tracker for the United States and states within.
 			This is very useful for people who want to know how many cases there have been,
 			and if the current amount of cases is spiking. It is useful to also 
-			compare the number of cases and deaths in different countries to see
+			compare the number of cases and deaths in different states to see
 			how the preventative measures compare.
 		</p>
 		<p>
@@ -133,10 +134,10 @@
 		</p>
 		<p>
 			This API is useful for anyone who wants to know the statistics
-			about covid cases and deaths in any country. If someone wanted to see if
+			about covid cases and deaths in any state in the US. If someone wanted to see if
 			there was a correlation between the amount of preventative measures taken
-			in one country compared to another, they could use this API to check and
-			compare the number of cases + deaths between countries.
+			in one state compared to another, they could use this API to check and
+			compare the number of cases + deaths between states.
 		</p>
 		</div>
 	</div>
